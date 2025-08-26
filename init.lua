@@ -2,18 +2,18 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.o.tabstop=4
-vim.o.softtabstop=4
-vim.o.shiftwidth=4
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.spell = true
-vim.o.guifont="JetBrains Mono:h16"
+vim.o.guifont = 'JetBrains Mono:h16'
 vim.o.smartindent = true
-vim.o.scrolloff=8
+vim.o.scrolloff = 8
 
 -- stack: make jump list behave like tag stak
 -- view: make sure vim view does not center on the cursor after jumping back
-vim.o.jumpoptions="stack,view"
+vim.o.jumpoptions = 'stack,view'
 -- Enable relative line numbers
 vim.o.relativenumber = true
 -- turn hybrid line numbers on
@@ -23,7 +23,6 @@ vim.opt.number = true
 
 -- Enable relative line numbers
 vim.opt.relativenumber = true
-
 
 -- [[ Basic Keymaps ]]
 -- Use visual line movement (wrap-aware) instead of logical lines
@@ -106,14 +105,14 @@ vim.keymap.set('n', 'zs', ':setlocal foldmethod=syntax<CR>')
 -- TODO: need testing, not sure vim.o is same as setlocal
 -- Toggle folding function
 local function toggle_fugitive_folds()
-    if vim.o.foldmethod == 'syntax' then
-        vim.o.foldmethod = 'manual'
-        vim.cmd('normal! zE')
-        print("Folds: manual (all folds cleared)")
-    else
-        vim.o.foldmethod = 'syntax'
-        print("Folds: syntax")
-    end
+  if vim.o.foldmethod == 'syntax' then
+    vim.o.foldmethod = 'manual'
+    vim.cmd 'normal! zE'
+    print 'Folds: manual (all folds cleared)'
+  else
+    vim.o.foldmethod = 'syntax'
+    print 'Folds: syntax'
+  end
 end
 
 -- Folding keymap using the function
@@ -125,21 +124,21 @@ vim.api.nvim_create_user_command('Tc', 'tabclose', {})
 
 -- Git mappings
 vim.api.nvim_create_user_command('Gcc', function()
-    vim.fn.feedkeys(':Git commit -m ""' .. vim.api.nvim_replace_termcodes('<Left>', true, false, true))
+  vim.fn.feedkeys(':Git commit -m ""' .. vim.api.nvim_replace_termcodes('<Left>', true, false, true))
 end, {})
 
 vim.api.nvim_create_user_command('Gcr', function()
-    vim.fn.feedkeys(':Git commit -m "refactor"' .. vim.api.nvim_replace_termcodes('<Left>', true, false, true))
+  vim.fn.feedkeys(':Git commit -m "refactor"' .. vim.api.nvim_replace_termcodes('<Left>', true, false, true))
 end, {})
 
 vim.api.nvim_create_user_command('Gca', 'Git commit --amend', {})
 
 -- Set filetype for Golang templates
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
-    pattern = '*.tmpl',
-    callback = function()
-        vim.bo.filetype = 'html'
-    end,
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*.tmpl',
+  callback = function()
+    vim.bo.filetype = 'html'
+  end,
 })
 
 -- [[ Basic Autocommands ]]
@@ -182,7 +181,7 @@ rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+require('lazy').setup {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
@@ -815,28 +814,6 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-    end,
-  },
-
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -929,24 +906,37 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
-  ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
+
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
+  'tpope/vim-obsession',
+  'tpope/vim-dadbod',
+  'kristijanhusak/vim-dadbod-ui',
+  'junegunn/gv.vim',
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {},
+    -- Optional dependencies
+    dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+    -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+    lazy = false,
   },
-})
+  {
+    'neanias/everforest-nvim',
+    version = false,
+    lazy = false,
+    priority = 1000, -- make sure to load this before all the other start plugins
+    -- Optional; default configuration will be used if setup isn't called.
+    config = function()
+      require('everforest').setup {
+        -- Your config here
+      }
+    end,
+  },
+}
+
+-- [[ EVERFOREST THEME ]]
+vim.cmd [[colorscheme everforest]]
